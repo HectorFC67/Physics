@@ -1,33 +1,46 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Moving : MonoBehaviour
 {
+    private Rigidbody riggidBody;
+    private bool canJump;
     [SerializeField]
-    public int jumpForce = 85;
+    public int jumpForce = 200;
     [SerializeField]
-    float moveSpeed = 25f;
+    float moveSpeed = 10f;
+
+
     // Start is called before the first frame update
     void Start()
     {
-
+        riggidBody = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
     void Update()
     {
         Move();
-
         Jump();
     }
 
     private void Jump()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (canJump && Input.GetKeyDown(KeyCode.Space))
         {
-            this.GetComponent<Rigidbody>().AddForce(Vector3.up * jumpForce);
+            riggidBody.AddForce(new Vector3(0, jumpForce, 0));
         }
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        canJump = true;
+    }
+    void OnCollisionExit(Collision collision)
+    {
+        canJump = false;
     }
 
     private void Move()
@@ -38,4 +51,5 @@ public class Moving : MonoBehaviour
         Vector3 movement = new Vector3(horizontalInput, 0f, verticalInput);
         transform.position += movement * moveSpeed * Time.deltaTime;
     }
+
 }
