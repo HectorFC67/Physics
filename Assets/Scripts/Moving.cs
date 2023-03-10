@@ -10,7 +10,7 @@ public class Moving : MonoBehaviour
     [SerializeField]
     public int jumpForce = 200;
     [SerializeField]
-    float moveSpeed = 10f;
+    float moveSpeed = 1.5f;
 
 
     // Start is called before the first frame update
@@ -36,11 +36,14 @@ public class Moving : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        canJump = true;
+            canJump = true;
     }
     void OnCollisionExit(Collision collision)
     {
-        canJump = false;
+        if (collision.gameObject.layer == LayerMask.NameToLayer("ground"))
+        {
+            canJump = false;
+        }
     }
 
     private void Move()
