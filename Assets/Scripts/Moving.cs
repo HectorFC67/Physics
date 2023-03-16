@@ -16,6 +16,7 @@ public class Moving : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        canJump = true;
         riggidBody = GetComponent<Rigidbody>();
     }
 
@@ -36,14 +37,14 @@ public class Moving : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("ground") || collision.gameObject.layer == LayerMask.NameToLayer("limit") || collision.gameObject.layer == LayerMask.NameToLayer("barrier"))
+        {
             canJump = true;
+        }
     }
     void OnCollisionExit(Collision collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("ground"))
-        {
             canJump = false;
-        }
     }
 
     private void Move()
