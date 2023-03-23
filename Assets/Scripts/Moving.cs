@@ -56,23 +56,53 @@ public class Moving : MonoBehaviour
 
     void move()
     {
-        if (Input.GetKey(KeyCode.UpArrow))
+        Vector3 moveDirection = Vector3.zero;
+
+        if (Input.GetKey(KeyCode.W))
         {
-            transform.position += Time.deltaTime * Vector3.forward * speed;
+            moveDirection += Vector3.forward;
         }
-        else if (Input.GetKey(KeyCode.DownArrow))
+        if (Input.GetKey(KeyCode.S))
         {
-            transform.position += Time.deltaTime * Vector3.back * speed;
+            moveDirection += Vector3.back;
         }
-        else if (Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetKey(KeyCode.A))
         {
-            transform.position += Time.deltaTime * Vector3.left * speed;
+            moveDirection += Vector3.left;
         }
-        else if (Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.D))
         {
-            transform.position += Time.deltaTime * Vector3.right * speed;
+            moveDirection += Vector3.right;
+        }
+
+        // rotate towards movement direction
+        if (moveDirection != Vector3.zero)
+        {
+            transform.rotation = Quaternion.LookRotation(moveDirection);
+        }
+
+        transform.position += Time.deltaTime * moveDirection.normalized * speed;
+    }
+
+    void FixedUpdate()
+    {
+        int layerMask = 1 << 8;
+        layerMask = ~layerMask;
+
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, layerMask))
+        {
+            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.red);
+            Debug.Log("Hit " + hit.collider.gameObject.name); // imprime el nombre del objeto con el que hace hit
+        }
+        else
+        {
+            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 1000, Color.yellow);
+            Debug.Log("Did not Hit");
         }
     }
+
+
 }
 
 

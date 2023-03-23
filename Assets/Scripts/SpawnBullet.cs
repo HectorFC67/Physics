@@ -10,7 +10,7 @@ public class SpawnBullet : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.H))
+        if (Input.GetMouseButtonDown(0))
         {
             GameObject bullet = Instantiate(bulletPrefab, spawnPoint.position, spawnPoint.rotation);
             Rigidbody rb = bullet.GetComponent<Rigidbody>();
@@ -20,10 +20,11 @@ public class SpawnBullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("limit") || collision.gameObject.layer == LayerMask.NameToLayer("barrier"))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("limit") || collision.gameObject.layer == LayerMask.NameToLayer("barrier") || collision.gameObject.layer == LayerMask.NameToLayer("enemy"))
         {
             Destroy(collision.gameObject); // Destruir objeto de limit o barrier original
             Destroy(gameObject); // Destruir la bala
         }
     }
+
 }
