@@ -101,8 +101,6 @@ public class Moving : MonoBehaviour
             Debug.Log("Did not Hit");
         }
     }
-
-
 }
 
 
